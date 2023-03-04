@@ -1,25 +1,76 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+
+function BookmarkText () {
+  return (
+    <div className='bookmarkText'>
+      Text Goes Here 
+    </div>
+  )
+}
+
+function BookmarkImg () {
+  return (
+    <div> Image goes here
+    </div>
+  )
+}
+
+function SecondaryBookmark () {
+  return (
+    <div className='secondaryBookmark'>
+      <BookmarkImg/>
+      <BookmarkText/>
+    </div>
+  )
+}
+
+function SecondaryBookmarksViewport () {
+  return (
+    <div className='secondaryBookmarksViewport'>
+      <SecondaryBookmark/>
+      <SecondaryBookmark/>
+      <SecondaryBookmark/>
+      <SecondaryBookmark/>
+      <SecondaryBookmark/>
+      <SecondaryBookmark/>
+    </div>
+  )
+}
+
+function PrimaryBookmark () {
+  return (
+    <div className='primaryBookmarkViewport'>
+      <BookmarkImg/>
+      <BookmarkText/>
+    </div>
+  )
+}
+
+function BookmarkViewports () {
+  return (
+    <div className='bookmarksViewport'>
+      <PrimaryBookmark/>
+      <SecondaryBookmarksViewport/>
+    </div>
+  )
+}
+
+function NavBar () {
+  return (
+    <div className='navBar'>
+      Navigate me somewhere interesting
+    </div>
+  )
+}
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <div className='mainViewport'>
+      Insert Catchy Title + Logo Here
+      <NavBar/>
+      <BookmarkViewports/>
+      </div>
   );
 }
 
