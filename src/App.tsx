@@ -2,7 +2,6 @@
 import './App.css';
 import { userAction } from './logic';
 
-<body onLoad={userAction}></body>
 
 function BookmarkText () {
   return (
