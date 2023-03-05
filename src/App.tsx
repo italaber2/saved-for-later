@@ -1,10 +1,13 @@
-import React from 'react';
+//import React from 'react';
 import './App.css';
+import { userAction } from './logic';
+
+<body onLoad={userAction}></body>
 
 function BookmarkText () {
   return (
-    <div className='bookmarkText'>
-      Text Goes Here 
+    <div className='bookmarkText' onClick={userAction}>
+     <p id='text'>Placeholder text</p> 
     </div>
   )
 }
@@ -40,7 +43,7 @@ function SecondaryBookmarksViewport () {
 
 function PrimaryBookmark () {
   return (
-    <div className='primaryBookmarkViewport'>
+    <div className='primaryBookmarkViewport' onClick={userAction}>
       <BookmarkImg/>
       <BookmarkText/>
     </div>
