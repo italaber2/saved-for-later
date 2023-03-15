@@ -14,3 +14,9 @@ export const displayBookmark = async () => {
   document.getElementById("title")!.innerHTML = myJson.title;
   document.getElementById("description")!.innerHTML = myJson.description;
 };
+
+// look into use State + use Effect
+// fix image
+// fix first bookmark
+// dynamic bookmarks
+// ts interface for data from api (json)
