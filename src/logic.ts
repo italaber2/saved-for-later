@@ -1,9 +1,16 @@
-export const userAction = async () => {
-  const response = await fetch('https://jsonlink.io/api/extract?url=https://gizmodo.com/european-central-bank-bitcoin-is-on-road-to-irrelevance-1849835418?utm_source=digg ', {
-    method: 'GET'
-  });
-  const myJson = await response.json(); 
-  console.log(myJson.title);
-  //document.getElementById('bookmarkImg').setAttribute('src', 'data:') = myJson.images[0]
-  document.getElementById('text')!.innerHTML = myJson.title
-}
+import { bookmarkLinks } from "./data";
+
+export const displayBookmark = async () => {
+  const response = await fetch(
+    "https://jsonlink.io/api/extract?url=" + bookmarkLinks[3],
+    {
+      method: "GET",
+    }
+  );
+  console.log(bookmarkLinks[0]);
+  const myJson = await response.json();
+  const imageSrc = document.getElementById("img") as HTMLImageElement;
+  imageSrc.src = myJson.images;
+  document.getElementById("title")!.innerHTML = myJson.title;
+  document.getElementById("description")!.innerHTML = myJson.description;
+};

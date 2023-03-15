@@ -1,28 +1,51 @@
 //import React from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
-import { userAction } from './logic';
+import { bookmarkLinks } from "./data";
 
-
-function BookmarkText () {
+function BookmarkText (title: string, description: string) {
   return (
-    <div className='bookmarkText' onClick={userAction}>
-     <p id='text'>Placeholder text</p> 
+    <div className='bookmarkText'>
+      <p id='title'>{title}</p>
+      <p id='description'>{description}</p>  
     </div>
   )
 }
 
 function BookmarkImg () {
   return (
-    <div> Image goes here
+    <div>
+      <img id='img' alt='article thumbnail'/>
     </div>
   )
 }
 
+export const getBookmarkData = async () => {
+  const response = await fetch(
+    "https://jsonlink.io/api/extract?url=" + bookmarkLinks[3],
+    {
+      method: "GET",
+    }
+  );
+  const myJson = await response.json();
+  return myJson;
+};
+
 function SecondaryBookmark () {
+  const [bookmarkData, setBookmarkData] = useState ({} as any)
+  useEffect(()=> {
+    async function retrieveBookmarkData() {
+      const returnValue = await getBookmarkData();
+      setBookmarkData(returnValue);
+    }
+    retrieveBookmarkData();
+  }, []
+  );
+  
   return (
     <div className='secondaryBookmark'>
       <BookmarkImg/>
-      <BookmarkText/>
+      {BookmarkText(bookmarkData.title as string, bookmarkData.description as string)}
     </div>
   )
 }
@@ -42,9 +65,8 @@ function SecondaryBookmarksViewport () {
 
 function PrimaryBookmark () {
   return (
-    <div className='primaryBookmarkViewport' onClick={userAction}>
+    <div className='primaryBookmarkViewport'>
       <BookmarkImg/>
-      <BookmarkText/>
     </div>
   )
 }
