@@ -16,8 +16,8 @@ export {};
 //  document.getElementById("description")!.innerHTML = myJson.description;
 //};
 
-// look into use State + use Effect
-// fix image
-// fix first bookmark
+// look into use State + use Effect (DONE)
+// fix image (DONE)
+// fix first bookmark (DONE)
 // dynamic bookmarks
 // ts interface for data from api (json)
