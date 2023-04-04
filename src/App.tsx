@@ -12,40 +12,62 @@ function BookmarkText (title: string, description: string) {
   )
 }
 
-function BookmarkImg () {
+function BookmarkImg (img: string) {
   return (
-    <div>
-      <img id='img' alt='article thumbnail'/>
+    <div className='bookmarkImg'>
+      <img src={img} width="100" height="50" alt='Bookmark thumbnail'/>
     </div>
   )
 }
 
-export const getBookmarkData = async () => {
+export const getBookmarkData = async (bookmarkLink: number) => {
   const response = await fetch(
-    "https://jsonlink.io/api/extract?url=" + bookmarkLinks[3],
+    "https://jsonlink.io/api/extract?url=" + bookmarkLinks[bookmarkLink],
     {
       method: "GET",
     }
   );
   const myJson = await response.json();
+  console.log(myJson)
   return myJson;
 };
 
 function SecondaryBookmark () {
   const [bookmarkData, setBookmarkData] = useState ({} as any)
   useEffect(()=> {
+    async function retrieveBookmarkData(arrayNumber: number) {
+      const returnValue = await getBookmarkData(arrayNumber);
+      setBookmarkData(returnValue);
+    }
+    for (let i = 0; i < bookmarkLinks.length; i++) {
+      retrieveBookmarkData(i);
+    } 
+  }, []
+  );
+
+  return (
+    <div className='secondaryBookmark'>
+      {BookmarkText(bookmarkData.title as string, bookmarkData.description as string)}
+      {BookmarkImg(bookmarkData.images as string)}
+    </div>
+  )
+}
+
+function PrimaryBookmark () {
+  const [bookmarkData, setBookmarkData] = useState ({} as any)
+  useEffect(()=> {
     async function retrieveBookmarkData() {
-      const returnValue = await getBookmarkData();
+      const returnValue = await getBookmarkData(0);
       setBookmarkData(returnValue);
     }
     retrieveBookmarkData();
   }, []
   );
-  
+
   return (
-    <div className='secondaryBookmark'>
-      <BookmarkImg/>
+    <div className='primaryBookmark'>
       {BookmarkText(bookmarkData.title as string, bookmarkData.description as string)}
+      {BookmarkImg(bookmarkData.images as string)}
     </div>
   )
 }
@@ -63,10 +85,10 @@ function SecondaryBookmarksViewport () {
   )
 }
 
-function PrimaryBookmark () {
+function PrimaryBookmarkViewport () {
   return (
     <div className='primaryBookmarkViewport'>
-      <BookmarkImg/>
+      <PrimaryBookmark/>
     </div>
   )
 }
@@ -74,7 +96,7 @@ function PrimaryBookmark () {
 function BookmarkViewports () {
   return (
     <div className='bookmarksViewport'>
-      <PrimaryBookmark/>
+      <PrimaryBookmarkViewport/>
       <SecondaryBookmarksViewport/>
     </div>
   )
