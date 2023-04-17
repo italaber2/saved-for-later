@@ -1,6 +1,6 @@
 //import React from 'react';
 import { useEffect, useState } from 'react';
-import './App.css';
+import './index.css';
 import { bookmarkLinks } from "./data";
 
 function BookmarkText (title: string, description: string) {
@@ -20,33 +20,30 @@ function BookmarkImg (img: string) {
   )
 }
 
-export const getBookmarkData = async (bookmarkLink: number) => {
+async function getBookmarkData (bookmarkUrl: string) {
   const response = await fetch(
-    "https://jsonlink.io/api/extract?url=" + bookmarkLinks[bookmarkLink],
+    "https://jsonlink.io/api/extract?url=" + bookmarkUrl,
     {
       method: "GET",
     }
   );
   const myJson = await response.json();
-  console.log(myJson)
   return myJson;
 };
 
-function SecondaryBookmark () {
+function SecondaryBookmark (bookmarkUrl: string) {
   const [bookmarkData, setBookmarkData] = useState ({} as any)
   useEffect(()=> {
-    async function retrieveBookmarkData(arrayNumber: number) {
-      const returnValue = await getBookmarkData(arrayNumber);
+    async function retrieveBookmarkData() {
+      const returnValue = await getBookmarkData(bookmarkUrl);
       setBookmarkData(returnValue);
     }
-    for (let i = 0; i < bookmarkLinks.length; i++) {
-      retrieveBookmarkData(i);
-    } 
+      retrieveBookmarkData();
   }, []
   );
 
   return (
-    <div className='secondaryBookmark'>
+    <div className='secondaryBookmark' key={bookmarkUrl}>
       {BookmarkText(bookmarkData.title as string, bookmarkData.description as string)}
       {BookmarkImg(bookmarkData.images as string)}
     </div>
@@ -57,7 +54,8 @@ function PrimaryBookmark () {
   const [bookmarkData, setBookmarkData] = useState ({} as any)
   useEffect(()=> {
     async function retrieveBookmarkData() {
-      const returnValue = await getBookmarkData(0);
+      const firstBookmark = bookmarkLinks[0]
+      const returnValue = await getBookmarkData(firstBookmark);
       setBookmarkData(returnValue);
     }
     retrieveBookmarkData();
@@ -73,14 +71,16 @@ function PrimaryBookmark () {
 }
 
 function SecondaryBookmarksViewport () {
+  const slicedBookmarkLinks = bookmarkLinks.slice(1);
+  console.log(slicedBookmarkLinks);
+  // Need to fix multiple calls as documented above
+  const bookmarkComponents = slicedBookmarkLinks.map((bookmarkLink)=> {
+      return SecondaryBookmark(bookmarkLink)
+     }
+    )
   return (
     <div className='secondaryBookmarksViewport'>
-      <SecondaryBookmark/>
-      <SecondaryBookmark/>
-      <SecondaryBookmark/>
-      <SecondaryBookmark/>
-      <SecondaryBookmark/>
-      <SecondaryBookmark/>
+      {bookmarkComponents}
     </div>
   )
 }
@@ -121,3 +121,4 @@ function App() {
 }
 
 export default App;
+
