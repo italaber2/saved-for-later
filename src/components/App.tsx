@@ -6,8 +6,8 @@ import { bookmarkLinks } from "./data";
 function BookmarkText (title: string, description: string) {
   return (
     <div className='bookmarkText'>
-      <p id='title'>{title}</p>
-      <p id='description'>{description}</p>  
+      <p id='bookmarkTitle'>{title}</p>
+      <p id='bookmarkDescription'>{description}</p>  
     </div>
   )
 }
@@ -15,7 +15,7 @@ function BookmarkText (title: string, description: string) {
 function BookmarkImg (img: string) {
   return (
     <div className='bookmarkImg'>
-      <img src={img} width="100" height="50" alt='Bookmark thumbnail'/>
+      <img id='thumbnailImg' src={img} width="100" height="50" alt='Bookmark thumbnail'/>
     </div>
   )
 }
@@ -63,10 +63,8 @@ function PrimaryBookmark () {
   );
 
   return (
-    <div className='primaryBookmark'>
-      {BookmarkText(bookmarkData.title as string, bookmarkData.description as string)}
-      {BookmarkImg(bookmarkData.images as string)}
-    </div>
+    <>{BookmarkText(bookmarkData.title as string, bookmarkData.description as string)}
+    {BookmarkImg(bookmarkData.images as string)}</>
   )
 }
 

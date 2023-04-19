@@ -39,7 +39,8 @@ body {
 
 .primaryBookmarkViewport {
   display: flex;
-  flex-direction: row;
+  flex-direction: row-reverse;
+  flex-wrap: nowrap;
 }
 
 .secondaryBookmarksViewport {
@@ -47,7 +48,19 @@ body {
   grid-template-columns: auto auto auto;
 }
 
-.bookmarkImg {
-  height: 100px;
+.primaryBookmarkViewport .bookmarkImg {
+  width: 50vw;
+}
+
+.primaryBookmarkViewport .primaryBookmarkText {
+  width: 50vw;
+}
+
+#thumbnailImg {
+  margin: auto;
+}
+
+#bookmarkTitle,
+#bookmarkDescription {
   margin: auto;
 }
