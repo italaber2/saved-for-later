@@ -37,7 +37,17 @@ body {
   background-color: orangered;
 }
 
+.primaryBookmarkViewport {
+  display: flex;
+  flex-direction: row;
+}
+
 .secondaryBookmarksViewport {
   display: grid;
   grid-template-columns: auto auto auto;
+}
+
+.bookmarkImg {
+  height: 100px;
+  margin: auto;
 }

@@ -1,6 +1,6 @@
 //import React from 'react';
 import { useEffect, useState } from 'react';
-import './index.css';
+import '../style/app.css';
 import { bookmarkLinks } from "./data";
 
 function BookmarkText (title: string, description: string) {
