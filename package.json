@@ -14,7 +14,8 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webpack": "^5.84.1"
   },
   "scripts": {
     "webpackBuild": "webpack --config webpack.config.js",
@@ -41,5 +42,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.237",
+    "webpack-cli": "^5.1.1"
   }
 }

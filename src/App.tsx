@@ -18,6 +18,55 @@ function BookmarkImg (img: string) {
   )
 }
 
+function DumpBookmarks() {
+  useEffect(() => {
+    chrome.bookmarks.getTree((bookmarkTreeNodes: any) => {
+      const bookmarks = extractBookmark(bookmarkTreeNodes);
+      downloadBookmarks(bookmarks);
+    });
+  }, []);
+
+  const extractBookmark: any = (nodes: any) => {
+    let bookmarks: any = [];
+
+    for (let i = 0; i < nodes.length; i++) {
+      const node = nodes[i];
+      if (node.children) {
+        bookmarks = bookmarks.concat(extractBookmark(node.children));
+      } else {
+        bookmarks.push({ title: node.title, url: node.url });
+      }
+    }
+
+    return bookmarks;
+  };
+
+  const downloadBookmarks = (bookmarks: any) => {
+    const content = JSON.stringify(bookmarks, null, 2);
+    const blob = new Blob([content], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'bookmarks.json';
+    a.click();
+
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="App">
+      <h1>Bookmark Downloader</h1>
+      <p>Click the button to download your bookmarks.</p>
+      <button onClick={() => window.close()}>Close</button>
+    </div>
+  );
+}
+
+//figure out how to import bookmark data (Chrome documentation)
+//need import bookmark function
+//need sort bookmark data by six oldest function
+
 async function getBookmarkData (bookmarkUrl: string) {
   const response = await fetch(
     "https://jsonlink.io/api/extract?url=" + bookmarkUrl,
