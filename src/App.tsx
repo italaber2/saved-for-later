@@ -7,7 +7,7 @@ interface BookmarkObject {
   dateAdded: number
  }
 
-//refine bookmark search by oldest + only oldest 6 elements
+ const numberOfDisplayedBookmarks: number = 6
 //clickable links
 
 function App() {
@@ -79,8 +79,8 @@ function Bookmark (bookmarkObject: BookmarkObject) {
 }
 
 function BookmarkViewport () {
-  bookmarkLinks.sort((a: any, b: any) => a.dateAdded - b.dateAdded);
-  const slicedBookmarkLinks = bookmarkLinks.slice(0,6)
+  bookmarkLinks.sort((a: BookmarkObject, b: BookmarkObject) => a.dateAdded - b.dateAdded);
+  const slicedBookmarkLinks = bookmarkLinks.slice(0, numberOfDisplayedBookmarks)
   console.log(slicedBookmarkLinks);
   // Need to fix multiple calls as documented above
   const bookmarkComponents = slicedBookmarkLinks.map((bookmarkLink:any)=> {
