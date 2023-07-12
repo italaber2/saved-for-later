@@ -32,10 +32,10 @@ const [bookmarkLinks, setBookmarkLinks] = useState ([] as any)
     return bookmarks;
   };
 
-function BookmarkText (title: string) {
+function BookmarkText (title: string, url: string) {
   return (
     <div className='bookmarkText'>
-      <p id='bookmarkTitle'>{title}</p>
+      <a id='bookmarkTitle' href={url} target="_blank" rel="noopener noreferrer">{title}</a>
     </div>
   )
 }
@@ -73,13 +73,14 @@ function Bookmark (bookmarkObject: BookmarkObject) {
   return (
     <div className='bookmark' key={bookmarkObject.url}>
       {BookmarkImg(bookmarkData.images as string)}
-      {BookmarkText(bookmarkData.title as string)}
+      {BookmarkText(bookmarkData.title as string, bookmarkData.url as string)}
     </div>
   )
 }
 
 function BookmarkViewport () {
-  const slicedBookmarkLinks = bookmarkLinks;
+  bookmarkLinks.sort((a: any, b: any) => a.dateAdded - b.dateAdded);
+  const slicedBookmarkLinks = bookmarkLinks.slice(0,6)
   console.log(slicedBookmarkLinks);
   // Need to fix multiple calls as documented above
   const bookmarkComponents = slicedBookmarkLinks.map((bookmarkLink:any)=> {
