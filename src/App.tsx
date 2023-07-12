@@ -7,8 +7,6 @@ interface BookmarkObject {
   dateAdded: number
  }
 
-//general refactoring
-//figure out why the new bookmark isn't working
 //refine bookmark search by oldest + only oldest 6 elements
 //clickable links
 
@@ -31,7 +29,6 @@ const [bookmarkLinks, setBookmarkLinks] = useState ([] as any)
         bookmarks.push({ title: node.title, url: node.url, dateAdded: node.dateAdded });
       }
     }
-
     return bookmarks;
   };
 
@@ -62,7 +59,7 @@ async function getBookmarkData (bookmarkObject: BookmarkObject) {
   return myJson;
 };
 
-function SecondaryBookmark (bookmarkObject: BookmarkObject) {
+function Bookmark (bookmarkObject: BookmarkObject) {
   const [bookmarkData, setBookmarkData] = useState ({} as any)
   useEffect(()=> {
     async function retrieveBookmarkData() {
@@ -74,39 +71,39 @@ function SecondaryBookmark (bookmarkObject: BookmarkObject) {
   );
 
   return (
-    <div className='secondaryBookmark' key={bookmarkObject.url}>
-      {BookmarkText(bookmarkData.title as string)}
+    <div className='bookmark' key={bookmarkObject.url}>
       {BookmarkImg(bookmarkData.images as string)}
+      {BookmarkText(bookmarkData.title as string)}
     </div>
   )
 }
 
-function SecondaryBookmarksViewport () {
+function BookmarkViewport () {
   const slicedBookmarkLinks = bookmarkLinks;
   console.log(slicedBookmarkLinks);
   // Need to fix multiple calls as documented above
   const bookmarkComponents = slicedBookmarkLinks.map((bookmarkLink:any)=> {
-      return SecondaryBookmark(bookmarkLink)
+      return Bookmark(bookmarkLink)
      }
     )
   return (
-    <div className='secondaryBookmarksViewport'>
+    <div className='bookmarksViewport'>
       {bookmarkComponents}
     </div>
   )
 }
 
-function BookmarkViewports () {
+function Container () {
   return (
-    <div className='bookmarksViewport'>
-      <SecondaryBookmarksViewport/>
+    <div className='container'>
+      <BookmarkViewport/>
     </div>
   )
 }
 
   return (
     <div className='mainViewport'>
-      <BookmarkViewports/>
+      <Container/>
       </div>
   );
 }
