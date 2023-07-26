@@ -5,14 +5,17 @@ import DeleteButton from "./components/deleteButton";
 import SaveForLaterButton from "./components/saveForLaterButton";
 
 interface BookmarkObject {
-  title: string;
+  id: string;
   url: string;
+  title: string;
+  parentId: string;
   dateAdded: number;
 }
 
-const numberOfDisplayedBookmarks: number = 6;
+const numberOfDisplayedBookmarks: number = 5;
 
 function App() {
+  // calls the api to get bookmark metadata
   const [bookmarkLinks, setBookmarkLinks] = useState([] as any);
   useEffect(() => {
     chrome.bookmarks.getTree((bookmarkTreeNodes: any) => {
@@ -29,15 +32,17 @@ function App() {
         bookmarks = bookmarks.concat(extractBookmark(node.children));
       } else {
         bookmarks.push({
-          title: node.title,
+          id: node.id,
           url: node.url,
+          title: node.title,
+          parentId: node.parentId,
           dateAdded: node.dateAdded,
         });
       }
     }
     return bookmarks;
   };
-
+  // calls the api to get bookmark metadata
   async function getBookmarkData(bookmarkObject: BookmarkObject) {
     const response = await fetch(
       "https://jsonlink.io/api/extract?url=" + bookmarkObject.url,
@@ -63,8 +68,13 @@ function App() {
       <div className="bookmark" key={bookmarkObject.url}>
         {BookmarkImg(bookmarkData.images as string)}
         {BookmarkText(bookmarkData.title as string, bookmarkData.url as string)}
-        <DeleteButton />
-        <SaveForLaterButton />
+        {DeleteButton(bookmarkObject.id as string)}
+        {SaveForLaterButton(
+          bookmarkData.url as string,
+          bookmarkData.title as string,
+          bookmarkObject.id as string,
+          bookmarkObject.parentId as string
+        )}
       </div>
     );
   }
@@ -77,24 +87,15 @@ function App() {
       0,
       numberOfDisplayedBookmarks
     );
-    console.log(slicedBookmarkLinks);
     const bookmarkComponents = slicedBookmarkLinks.map((bookmarkLink: any) => {
       return Bookmark(bookmarkLink);
     });
     return <div className="bookmarksViewport">{bookmarkComponents}</div>;
   }
 
-  function Container() {
-    return (
-      <div className="container">
-        <BookmarkViewport />
-      </div>
-    );
-  }
-
   return (
     <div className="mainViewport">
-      <Container />
+      <BookmarkViewport />
     </div>
   );
 }

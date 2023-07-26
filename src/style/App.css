@@ -4,8 +4,14 @@ body {
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+.container {
+  height: 500px;
+  width: 500px;
+}
+
+
 .mainViewport {
-  background-color: pink;
+  /* background-color: pink; */
   border: 1px solid black;
   padding: 5px;
   margin: 5px auto;
@@ -22,6 +28,7 @@ body {
   margin: inherit;
   text-align: left;
 }
+
 .bookmark {
   display: grid;
   grid-template-columns: repeat(2, 2fr);

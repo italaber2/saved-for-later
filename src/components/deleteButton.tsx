@@ -1,13 +1,37 @@
+import { handleDeleteBookmark } from "../utils";
+import { useState, useEffect } from "react";
 import { Stack, Button } from "@chakra-ui/react";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-function deleteButton() {
+function DeleteButton(id: string) {
+  const [isDeleted, setIsDeleted] = useState<boolean>(false);
+  const [componentKey, setComponentKey] = useState<number>(0);
+
+  useEffect(() => {
+    if (isDeleted) {
+      // Generate a new key when the bookmark is deleted to refresh the component
+      setComponentKey((prevKey) => {
+        return prevKey + 1;
+      });
+    }
+  }, [isDeleted]);
+
+  if (isDeleted) {
+    // Reload the component when the key changes
+    window.location.reload();
+  }
+
   return (
-    <div>
+    <div key={componentKey}>
       <Stack direction="row" spacing={4}>
         <Button
+          onClick={() => {
+            handleDeleteBookmark(id, () => {
+              setIsDeleted(true);
+            });
+          }}
           leftIcon={<RiDeleteBin6Line />}
-          colorScheme="red"
+          colorScheme="green"
           variant="solid"
         >
           Delete
@@ -17,4 +41,4 @@ function deleteButton() {
   );
 }
 
-export default deleteButton;
+export default DeleteButton;
