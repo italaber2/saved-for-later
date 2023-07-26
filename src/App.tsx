@@ -44,14 +44,18 @@ function App() {
   };
   // calls the api to get bookmark metadata
   async function getBookmarkData(bookmarkObject: BookmarkObject) {
-    const response = await fetch(
-      "https://jsonlink.io/api/extract?url=" + bookmarkObject.url,
-      {
-        method: "GET",
-      }
-    );
-    const myJson = await response.json();
-    return myJson;
+    try {
+      const response = await fetch(
+        "https://jsonlink.io/api/extract?url=" + bookmarkObject.url,
+        {
+          method: "GET",
+        }
+      );
+      const myJson = await response.json();
+      return myJson;
+    } catch (error) {
+      throw new Error("Failed to fetch data from the API");
+    }
   }
 
   function Bookmark(bookmarkObject: BookmarkObject) {
