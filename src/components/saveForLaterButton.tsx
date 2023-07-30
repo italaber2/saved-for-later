@@ -42,9 +42,11 @@ function SaveForLaterButton(
     <div key={componentKey}>
       <Stack direction="row" spacing={4}>
         <Button
+          className="saveForLater"
           onClick={handleSaveForLater}
           leftIcon={<RxReload />}
-          colorScheme="pink"
+          colorScheme="green"
+          size="xs"
           variant="solid"
         >
           Save for later

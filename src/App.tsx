@@ -55,6 +55,15 @@ function App() {
   }
 
   function Bookmark(bookmarkObject: BookmarkObject) {
+    bookmarkLinks.sort(
+      (a: BookmarkObject, b: BookmarkObject) => a.dateAdded - b.dateAdded
+    );
+    const slicedBookmarkLinks = bookmarkLinks.slice(
+      0,
+      numberOfDisplayedBookmarks
+    );
+    const bookmarkComponents = slicedBookmarkLinks.map((bookmarkLink: any) => {
+      return Bookmark(bookmarkLink);
     const [bookmarkData, setBookmarkData] = useState({} as any);
     useEffect(() => {
       async function retrieveBookmarkData() {

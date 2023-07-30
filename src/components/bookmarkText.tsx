@@ -1,8 +1,8 @@
 function BookmarkText(title: string, url: string) {
   return (
-    <div className="bookmarkText">
+    <div>
       <a
-        id="bookmarkTitle"
+        className="bookmarkTitle"
         href={url}
         target="_blank"
         rel="noopener noreferrer"
