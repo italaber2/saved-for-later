@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import BookmarkImg from "./components/bookmarkImg";
 import BookmarkText from "./components/bookmarkText";
 import DeleteButton from "./components/deleteButton";
+//import LoadingSkeleton from "./components/loadingSkeleton";
+//https://chat.openai.com/share/e700bbce-885e-4392-bd62-c1ec3dd437b1 (for loading skeleton)
+
 import SaveForLaterButton from "./components/saveForLaterButton";
 
 interface BookmarkObject {
