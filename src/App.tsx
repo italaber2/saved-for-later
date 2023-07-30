@@ -40,6 +40,7 @@ function App() {
         });
       }
     }
+    console.log("🚀 ~ file: App.tsx:44 ~ App ~ bookmarks:", bookmarks);
     return bookmarks;
   };
   // calls the api to get bookmark metadata
@@ -52,6 +53,13 @@ function App() {
         }
       );
       const myJson = await response.json();
+      console.log("🚀 ~ file: App.tsx:56 ~ getBookmarkData ~ myJson:", myJson);
+      if (myJson.error === "request timeout") {
+        console.error(
+          "Uh oh! Request timeout for the bookmark " + bookmarkObject.url
+        );
+        return myJson;
+      }
       return myJson;
     } catch (error) {
       throw new Error("Failed to fetch data from the API");
@@ -63,6 +71,10 @@ function App() {
     useEffect(() => {
       async function retrieveBookmarkData() {
         const returnValue = await getBookmarkData(bookmarkObject);
+        console.log(
+          "🚀 ~ file: App.tsx:74 ~ retrieveBookmarkData ~ returnValue:",
+          returnValue
+        );
         setBookmarkData(returnValue);
       }
       retrieveBookmarkData();
