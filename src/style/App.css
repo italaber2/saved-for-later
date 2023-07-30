@@ -1,29 +1,23 @@
 .mainViewport {
   height: 500px;
-  width: 500px;
+  width: 393px;
 }
 
 .bookmarksViewport {
   display: grid;
-  grid-template-columns: auto;
+  grid-template-columns: 1fr;
+  grid-gap: 5px;
+  align-items: center;
   background-color: rgb(52, 53, 56);
-  height: auto;
-  width: auto;
 }
 
-.bookmark {
-  display: grid;
-  grid-template-columns: repeat(2, 2fr);
-}
+/* .bookmark {} */
 
-.thumbnailImg {
-  padding: 5px 5px;
-  max-height: 100px;
-  max-width: 170px;
-}
-
+.thumbnailImg,
 .bookmarkTitle {
-  padding: 5px 5px;
+  padding: 5px 7.5px;
+  max-height: 225px;
+  max-width: 393px;
   font-family: system-ui, sans-serif;
   font-size: large;
   font-weight: bold;
