@@ -21,6 +21,7 @@
   font-family: system-ui, sans-serif;
   font-size: large;
   font-weight: bold;
+  display: block;
   color: #ddd;
 }
 
