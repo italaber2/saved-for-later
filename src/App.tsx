@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import BookmarkImg from "./components/bookmarkImg";
 import BookmarkText from "./components/bookmarkText";
 import DeleteButton from "./components/deleteButton";
-//import LoadingSkeleton from "./components/loadingSkeleton";
+import LoadingSkeleton from "./components/loadingSkeleton";
 //https://chat.openai.com/share/e700bbce-885e-4392-bd62-c1ec3dd437b1 (for loading skeleton)
 
 import SaveForLaterButton from "./components/saveForLaterButton";
@@ -59,24 +59,38 @@ function App() {
 
   function Bookmark(bookmarkObject: BookmarkObject) {
     const [bookmarkData, setBookmarkData] = useState({} as any);
+    const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
       async function retrieveBookmarkData() {
         const returnValue = await getBookmarkData(bookmarkObject);
         setBookmarkData(returnValue);
+        setIsLoading(false);
       }
       retrieveBookmarkData();
     }, []);
 
+    // return <div>{isLoading ? <LoadingSkeleton /> : /* Render your actual content here using 'data' */}</div>;
+    // };
+
     return (
       <div className="bookmark" key={bookmarkObject.url}>
-        {BookmarkImg(bookmarkData.images as string)}
-        {BookmarkText(bookmarkData.title as string, bookmarkData.url as string)}
-        {DeleteButton(bookmarkObject.id as string)}
-        {SaveForLaterButton(
-          bookmarkData.url as string,
-          bookmarkData.title as string,
-          bookmarkObject.id as string,
-          bookmarkObject.parentId as string
+        {isLoading ? (
+          <LoadingSkeleton />
+        ) : (
+          <>
+            {BookmarkImg(bookmarkData.images as string)}
+            {BookmarkText(
+              bookmarkData.title as string,
+              bookmarkData.url as string
+            )}
+            {DeleteButton(bookmarkObject.id as string)}
+            {SaveForLaterButton(
+              bookmarkData.url as string,
+              bookmarkData.title as string,
+              bookmarkObject.id as string,
+              bookmarkObject.parentId as string
+            )}
+          </>
         )}
       </div>
     );
