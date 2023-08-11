@@ -15,21 +15,22 @@ interface BookmarkObject {
 const numberOfDisplayedBookmarks: number = 5;
 
 function App() {
-  // calls the api to get bookmark metadata
-  const [bookmarkLinks, setBookmarkLinks] = useState([] as any);
+  // calls the chrome api to get the bookmarks
+  const [Bookmarks, setBookmarks] = useState([] as any);
   useEffect(() => {
     chrome.bookmarks.getTree((bookmarkTreeNodes: any) => {
-      setBookmarkLinks(extractBookmark(bookmarkTreeNodes));
+      setBookmarks(extractBookmarks(bookmarkTreeNodes));
     });
   }, []);
 
-  const extractBookmark: any = (nodes: any) => {
+  // extracts the bookmarks with the defined parameters
+  const extractBookmarks: any = (nodes: any) => {
     let bookmarks: any = [];
 
     for (let i = 0; i < nodes.length; i++) {
       const node = nodes[i];
       if (node.children) {
-        bookmarks = bookmarks.concat(extractBookmark(node.children));
+        bookmarks = bookmarks.concat(extractBookmarks(node.children));
       } else {
         bookmarks.push({
           id: node.id,
@@ -42,10 +43,11 @@ function App() {
     }
     return bookmarks;
   };
-  // calls the api to get bookmark metadata
-  async function getBookmarkData(bookmarkObject: BookmarkObject) {
+
+  // calls the api to scrape the desired bookmark metadata
+  async function scrapeMetadata(objectData: BookmarkObject) {
     const response = await fetch(
-      "https://jsonlink.io/api/extract?url=" + bookmarkObject.url,
+      "https://jsonlink.io/api/extract?url=" + objectData.url,
       {
         method: "GET",
       }
@@ -54,48 +56,47 @@ function App() {
     return myJson;
   }
 
-  function Bookmark(bookmarkObject: BookmarkObject) {
-    const [bookmarkData, setBookmarkData] = useState({} as any);
+  // sets the bookmark metadata into the objects to be rendered
+  function SetMetadata(objectData: BookmarkObject) {
+    const [bookmarkData, setData] = useState({} as any);
     useEffect(() => {
       async function retrieveBookmarkData() {
-        const returnValue = await getBookmarkData(bookmarkObject);
-        setBookmarkData(returnValue);
+        const returnValue = await scrapeMetadata(objectData);
+        setData(returnValue);
       }
       retrieveBookmarkData();
     }, []);
 
     return (
-      <div className="bookmark" key={bookmarkObject.url}>
+      <div className="bookmark" key={objectData.url}>
         {BookmarkImg(bookmarkData.images as string)}
         {BookmarkText(bookmarkData.title as string, bookmarkData.url as string)}
-        {DeleteButton(bookmarkObject.id as string)}
+        {DeleteButton(objectData.id as string)}
         {SaveForLaterButton(
           bookmarkData.url as string,
           bookmarkData.title as string,
-          bookmarkObject.id as string,
-          bookmarkObject.parentId as string
+          objectData.id as string,
+          objectData.parentId as string
         )}
       </div>
     );
   }
 
-  function BookmarkViewport() {
-    bookmarkLinks.sort(
+  // order the bookmarks by date added
+  function OrderBookmarks() {
+    Bookmarks.sort(
       (a: BookmarkObject, b: BookmarkObject) => a.dateAdded - b.dateAdded
     );
-    const slicedBookmarkLinks = bookmarkLinks.slice(
-      0,
-      numberOfDisplayedBookmarks
-    );
-    const bookmarkComponents = slicedBookmarkLinks.map((bookmarkLink: any) => {
-      return Bookmark(bookmarkLink);
+    const slicedBookmarks = Bookmarks.slice(0, numberOfDisplayedBookmarks);
+    const reorderedBookmarks = slicedBookmarks.map((bookmark: any) => {
+      return SetMetadata(bookmark);
     });
-    return <div className="bookmarksViewport">{bookmarkComponents}</div>;
+    return <div className="bookmarksViewport">{reorderedBookmarks}</div>;
   }
 
   return (
     <div className="mainViewport">
-      <BookmarkViewport />
+      <OrderBookmarks />
     </div>
   );
 }

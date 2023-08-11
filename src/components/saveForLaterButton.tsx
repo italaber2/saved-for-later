@@ -46,7 +46,7 @@ function SaveForLaterButton(
           onClick={handleSaveForLater}
           leftIcon={<RxReload />}
           colorScheme="green"
-          size="xs"
+          size="sm"
           variant="solid"
         >
           Save for later

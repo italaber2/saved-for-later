@@ -33,7 +33,7 @@ function DeleteButton(id: string) {
           className="deleteButton"
           leftIcon={<RiDeleteBin6Line />}
           colorScheme="red"
-          size="xs"
+          size="sm"
           variant="solid"
         >
           Delete
