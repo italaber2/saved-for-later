@@ -2,8 +2,9 @@ import { handleDeleteBookmark } from "../utils";
 import { useState, useEffect } from "react";
 import { Stack, Button } from "@chakra-ui/react";
 import { RxReload } from "react-icons/rx";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
-function SaveForLaterButton(
+function BookmarkButtons(
   url: string,
   title: string,
   id: string,
@@ -51,9 +52,23 @@ function SaveForLaterButton(
         >
           Save for later
         </Button>
+        <Button
+          onClick={() => {
+            handleDeleteBookmark(id, () => {
+              setIsDeleted(true);
+            });
+          }}
+          className="deleteButton"
+          leftIcon={<RiDeleteBin6Line />}
+          colorScheme="red"
+          size="sm"
+          variant="solid"
+        >
+          Delete
+        </Button>
       </Stack>
     </div>
   );
 }
 
-export default SaveForLaterButton;
+export default BookmarkButtons;
