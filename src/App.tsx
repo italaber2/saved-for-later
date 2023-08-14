@@ -11,7 +11,7 @@ interface BookmarkObject {
   dateAdded: number;
 }
 
-const numberOfDisplayedBookmarks: number = 5;
+const numberOfDisplayedBookmarks: number = 2;
 
 function App() {
   const [extractedBookmarks, setExtractedBookmarks] = useState([] as any);
@@ -38,6 +38,10 @@ function App() {
           parentId: node.parentId,
           dateAdded: node.dateAdded,
         });
+        bookmarks.sort(
+          (a: BookmarkObject, b: BookmarkObject) => a.dateAdded - b.dateAdded
+        );
+        bookmarks.slice(0, numberOfDisplayedBookmarks);
       }
     }
     return bookmarks;
@@ -53,7 +57,7 @@ function App() {
   }
 
   // sets the bookmark metadata into the objects to be rendered
-  function SetMetadata(bookmarkData: BookmarkObject) {
+  function SetBookmark(bookmarkData: BookmarkObject) {
     const [metaData, setMetaData] = useState({} as any);
     useEffect(() => {
       async function retrieveBookmarkData() {
@@ -78,23 +82,18 @@ function App() {
   }
 
   // order the bookmarks by date added
-  function OrderBookmarks() {
-    extractedBookmarks.sort(
-      (a: BookmarkObject, b: BookmarkObject) => a.dateAdded - b.dateAdded
-    );
-    const slicedBookmarks = extractedBookmarks.slice(
-      0,
-      numberOfDisplayedBookmarks
-    );
-    const reorderedBookmarks = slicedBookmarks.map((bookmark: any) => {
-      return SetMetadata(bookmark);
-    });
-    return <div className="bookmarksViewport">{reorderedBookmarks}</div>;
+  function Bookmarks() {
+    const slicedBookmarks = extractedBookmarks
+      .slice(0, numberOfDisplayedBookmarks)
+      .map((bookmark: any) => {
+        return SetBookmark(bookmark);
+      });
+    return <div className="bookmarksViewport">{slicedBookmarks}</div>;
   }
 
   return (
     <div className="mainViewport">
-      <OrderBookmarks />
+      <Bookmarks />
     </div>
   );
 }
