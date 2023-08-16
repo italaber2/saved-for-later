@@ -58,11 +58,12 @@ function App() {
         console.error(
           "Uh oh! Request timeout for the bookmark " + bookmarkObject.url
         );
+        //set a generic bookmark for the error that returns the error message as the title
         return myJson;
       }
       return myJson;
     } catch (error) {
-      throw new Error("Failed to fetch data from the API");
+      throw new Error("Failed to fetch data from the API: " + error);
     }
   }
 
