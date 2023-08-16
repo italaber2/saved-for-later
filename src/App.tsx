@@ -58,7 +58,7 @@ function App() {
         console.error(
           "Uh oh! Request timeout for the bookmark " + bookmarkObject.url
         );
-        //set a generic bookmark for the error that returns the error message as the title
+        //set a generic bookmark for the error that returns the error message as the title + default image
         return myJson;
       }
       return myJson;
