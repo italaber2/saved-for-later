@@ -38,12 +38,12 @@ function App() {
           parentId: node.parentId,
           dateAdded: node.dateAdded,
         });
-        bookmarks.sort(
-          (a: BookmarkObject, b: BookmarkObject) => a.dateAdded - b.dateAdded
-        );
-        bookmarks.slice(0, numberOfDisplayedBookmarks);
       }
     }
+    bookmarks.sort(
+      (a: BookmarkObject, b: BookmarkObject) => a.dateAdded - b.dateAdded
+    );
+    bookmarks = bookmarks.slice(0, numberOfDisplayedBookmarks);
     return bookmarks;
   };
 
@@ -57,7 +57,7 @@ function App() {
   }
 
   // sets the bookmark metadata into the objects to be rendered
-  function SetBookmark(bookmarkData: BookmarkObject) {
+  function Bookmark(bookmarkData: BookmarkObject) {
     const [metaData, setMetaData] = useState({} as any);
     useEffect(() => {
       async function retrieveBookmarkData() {
@@ -81,14 +81,12 @@ function App() {
     );
   }
 
-  // order the bookmarks by date added
+  // map the bookmark data into a list of bookmark components
   function Bookmarks() {
-    const slicedBookmarks = extractedBookmarks
-      .slice(0, numberOfDisplayedBookmarks)
-      .map((bookmark: any) => {
-        return SetBookmark(bookmark);
-      });
-    return <div className="bookmarksViewport">{slicedBookmarks}</div>;
+    const bookmarkList = extractedBookmarks.map((bookmarkData: any) => {
+      return Bookmark(bookmarkData);
+    });
+    return <div className="bookmarksViewport">{bookmarkList}</div>;
   }
 
   return (
