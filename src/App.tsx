@@ -59,7 +59,11 @@ function App() {
           "Uh oh! Request timeout for the bookmark " + bookmarkObject.url
         );
         //set a generic bookmark for the error that returns the error message as the title + default image
-        return myJson;
+        return {
+          title: "node.id",
+          images: "/assets/logo512.png",
+          url: bookmarkObject.url,
+        };
       }
       return myJson;
     } catch (error) {
