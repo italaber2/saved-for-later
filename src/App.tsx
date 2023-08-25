@@ -11,7 +11,7 @@ interface BookmarkObject {
   dateAdded: number;
 }
 
-const numberOfDisplayedBookmarks: number = 2;
+const numberOfDisplayedBookmarks: number = 5;
 
 function App() {
   const [extractedBookmarks, setExtractedBookmarks] = useState([] as any);
@@ -49,11 +49,26 @@ function App() {
 
   // calls the api to scrape the desired bookmark metadata
   async function scrapeMetadata(url: string) {
-    const response = await fetch("https://jsonlink.io/api/extract?url=" + url, {
-      method: "GET",
-    });
-    const metaData = await response.json();
-    return metaData;
+    try {
+      const response = await fetch(
+        "https://jsonlink.io/api/extract?url=" + url,
+        {
+          method: "GET",
+        }
+      );
+      const metaData = await response.json();
+      if (metaData.error === "request timeout") {
+        console.error("Request timeout for the bookmark " + metaData.url);
+        return {
+          title: "418: Cannot brew coffee",
+          images: "/assets/logo512.png",
+          url: metaData.url,
+        };
+      }
+      return metaData;
+    } catch (error) {
+      throw new Error("Failed to fetch data from the API: " + error);
+    }
   }
 
   // sets the bookmark metadata into the objects to be rendered
