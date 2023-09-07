@@ -102,7 +102,7 @@ function App() {
 
     return (
       <div key={bookmarkData.id}>
-        <a href={metaData.url} target="_blank" rel="noopener noreferrer">
+        <a href={bookmarkData.url} target="_blank" rel="noopener noreferrer">
           {BookmarkImg(metaData.images as string)}
           {BookmarkText(bookmarkData.title as string, metaData.url as string)}
         </a>
