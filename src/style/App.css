@@ -1,6 +1,14 @@
+body {
+  background-color: rgb(52, 53, 56) !important;
+}
+
 .mainViewport {
   height: 500px;
   width: 393px;
+  background-color: rgb(52, 53, 56);
+  overflow-y: visible;
+  margin: 0;
+  padding: 0;
 }
 
 .bookmarksViewport {
@@ -27,4 +35,13 @@
 .saveForLater {
   align-items: left;
   margin: 5px;
+}
+
+.errorMessage {
+  padding: 5px 7.5px;
+  font-family: system-ui, sans-serif;
+  font-size: large;
+  font-weight: bold;
+  color: red;
+  display: block;
 }

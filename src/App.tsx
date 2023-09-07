@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import BookmarkImg from "./components/bookmarkImg";
 import BookmarkText from "./components/bookmarkText";
+import BookmarkError from "./components/bookmarkError";
 import BookmarkButtons from "./components/bookmarkButtons";
 
 interface BookmarkObject {
@@ -49,35 +50,38 @@ function App() {
   };
 
   // calls the api to scrape the desired bookmark metadata
-  async function scrapeMetadata(url: string) {
+  async function scrapeMetadata(bookmarkData: BookmarkObject) {
     try {
       const response = await fetch(
-        "https://jsonlink.io/api/extract?url=" + url,
+        "https://jsonlink.io/api/extract?url=" + bookmarkData.url,
         {
           method: "GET",
         }
       );
       const metaData = await response.json();
       if (metaData.error === "request timeout") {
-        console.error("Request timeout for the bookmark " + metaData.url);
+        console.error("Request timeout for the bookmark " + bookmarkData.url);
         return {
-          title: "418: Cannot brew coffee for " + metaData.url,
+          title: bookmarkData.title,
           images: "/assets/logo512.png",
           url: metaData.url,
+          error: "418: Cannot brew coffee for " + bookmarkData.url,
         };
       } else if (metaData.images.length === 0) {
-        console.error("Missimg image for " + metaData.url);
+        console.error("Missimg image for " + bookmarkData.url);
         return {
-          title: "Missing image for " + metaData.url,
+          title: bookmarkData.title,
           images: "/assets/logo512.png",
           url: metaData.url,
+          error: "Missimg image for " + bookmarkData.url,
         };
       } else if (metaData.title.length === 0) {
-        console.error("Missimg title for " + metaData.url);
+        console.error("Missimg title for " + bookmarkData.url);
         return {
-          title: "Missing title for " + metaData.url,
+          title: bookmarkData.title,
           images: "/assets/logo512.png",
           url: metaData.url,
+          error: "Missimg title for " + bookmarkData.url,
         };
       }
       return metaData;
@@ -117,7 +121,7 @@ function App() {
     const [metaData, setMetaData] = useState({} as any);
     useEffect(() => {
       async function retrieveBookmarkData() {
-        const returnValue = await scrapeMetadata(bookmarkData.url);
+        const returnValue = await scrapeMetadata(bookmarkData);
         setMetaData(returnValue);
       }
       retrieveBookmarkData();
@@ -126,10 +130,11 @@ function App() {
     return (
       <div key={bookmarkData.id}>
         {BookmarkImg(metaData.images as string)}
-        {BookmarkText(metaData.title as string, metaData.url as string)}
+        {BookmarkText(bookmarkData.title as string, metaData.url as string)}
+        {metaData.error && BookmarkError(metaData.error as string)}
         {BookmarkButtons(
           metaData.url as string,
-          metaData.title as string,
+          bookmarkData.title as string,
           bookmarkData.id as string,
           bookmarkData.parentId as string
         )}
