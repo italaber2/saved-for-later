@@ -45,7 +45,6 @@ function App() {
       (a: BookmarkObject, b: BookmarkObject) => a.dateAdded - b.dateAdded
     );
     bookmarks = bookmarks.slice(0, numberOfDisplayedBookmarks);
-    console.log("🚀 ~ file: App.tsx:48 ~ App ~ bookmarks:", bookmarks);
     return bookmarks;
   };
 
@@ -91,32 +90,6 @@ function App() {
   }
 
   // sets the bookmark metadata into the objects to be rendered
-  // const Bookmark = React.memo(function BookmarkComponent(
-  //   bookmarkData: BookmarkObject
-  // ) {
-  //   const [metaData, setMetaData] = useState<any | null>(null);
-  //   useEffect(() => {
-  //     async function retrieveBookmarkData() {
-  //       const returnValue = await scrapeMetadata(bookmarkData.url);
-  //       setMetaData(returnValue);
-  //     }
-  //     retrieveBookmarkData();
-  //   }, []);
-
-  //   return (
-  //     <div key={bookmarkData.id}>
-  //       {BookmarkImg(metaData.images as string)}
-  //       {BookmarkText(metaData.title as string, metaData.url as string)}
-  //       {BookmarkButtons(
-  //         metaData.url as string,
-  //         metaData.title as string,
-  //         bookmarkData.id as string,
-  //         bookmarkData.parentId as string
-  //       )}
-  //     </div>
-  //   );
-  // });
-
   function Bookmark(bookmarkData: BookmarkObject) {
     const [metaData, setMetaData] = useState({} as any);
     useEffect(() => {
@@ -129,9 +102,13 @@ function App() {
 
     return (
       <div key={bookmarkData.id}>
-        {BookmarkImg(metaData.images as string)}
-        {BookmarkText(bookmarkData.title as string, metaData.url as string)}
-        {metaData.error && BookmarkError(metaData.error as string)}
+        <a href={metaData.url} target="_blank" rel="noopener noreferrer">
+          {BookmarkImg(metaData.images as string)}
+          {BookmarkText(bookmarkData.title as string, metaData.url as string)}
+        </a>
+        <a href={bookmarkData.url} target="_blank" rel="noopener noreferrer">
+          {metaData.error && BookmarkError(metaData.error as string)}
+        </a>
         {BookmarkButtons(
           metaData.url as string,
           bookmarkData.title as string,
